@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql1:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: DummyPassword
+      MYSQL_DATABASE: OrderService
+      MYSQL_USER: Ayan_Baruah
+      MYSQL_PASSWORD: DummyPassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Spring Boot Application
+  spring-boot-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/OrderService
+      SPRING_DATASOURCE_USERNAME: Ayan_Baruah
+      SPRING_DATASOURCE_PASSWORD: DummyPassword
+
+volumes:
+  mysql_data:
